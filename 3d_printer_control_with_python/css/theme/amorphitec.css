@@ -1,0 +1,30 @@
+/*
+ * Headers
+ */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  text-transform: none;
+}
+
+.reveal h1 {
+  font-size: 3.2em; }
+
+/*
+ * Spacers
+ */
+.reveal .voffset2  { margin-top: 2px; }
+.reveal .voffset5 { margin-top: 5px; }
+.reveal .voffset10 { margin-top: 10px; }
+.reveal .voffset15 { margin-top: 15px; }
+.reveal .voffset30 { margin-top: 30px; }
+.reveal .voffset40 { margin-top: 40px; }
+.reveal .voffset60 { margin-top: 60px; }
+.reveal .voffset80 { margin-top: 80px; }
+.reveal .voffset100 { margin-top: 100px; }
+.reveal .voffset400 { margin-top: 400px; }
+.reveal .voffset500 { margin-top: 500px; }
+.reveal .voffset600 { margin-top: 600px; }

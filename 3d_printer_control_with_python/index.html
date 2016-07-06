@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>3D Printer Control with Python</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<!--<link rel="stylesheet" href="css/theme/solarized.css">-->
+		<link rel="stylesheet" href="css/theme/moon.css">
+		<link rel="stylesheet" href="css/theme/amorphitec.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Font Awesome -->
+		<link rel="stylesheet" href="lib/css/font-awesome.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section id="frontpage">
+          <div>
+            <div style="text-align: right; float: right;">
+              <p data-markdown># 3D Printer Control</p>
+              <p data-markdown># with</p>
+              <p data-markdown># Python</p>
+            </div>
+          </div>
+          <div>
+            <div style="text-align: left; float: left;" class="voffset500">
+              <p data-markdown>### SyPy July 2016</p>
+            </div>
+          </div>
+        </section>
+				<section id="james">
+          <div>
+            <div style="text-align: left; float: left;">
+              <p data-markdown># James Stewart</p>
+              <p data-markdown>## @amorphic</p>
+              <p data-markdown>## jimter.net</p>
+            </div>
+          </div>
+        </section>
+        <section id="sparkcc">
+          <img src="lib/img/sparkcc_01.png" style="background-color:white;">
+          <p data-markdown>## sparkcc.org</p>
+        </section>
+				<section id="overview">
+          <p data-markdown> # Overview</p>
+          <table>
+            <tr>
+              <td align="center" class="fragment">
+                <p data-markdown>## 3D Printing</p>
+                <p data-markdown>Process</p>
+                <p data-markdown>Control</p>
+                <p data-markdown>Limitations</p>
+              </td> 
+              <td align="center" class="fragment">
+                <p data-markdown>## OpenGB</p>
+                <p data-markdown>Goals</p>
+                <p data-markdown>Architecture</p>
+                <p data-markdown>Python!</p>
+              </td> 
+              <td align="center" class="fragment">
+                <p data-markdown>## Future</p>
+                <p data-markdown>Other Applications</p>
+                <p data-markdown>Development</p>
+              </td> 
+            </tr>
+          </table> 
+				</section>
+				<section id="how-printer-works-01">
+          <p data-markdown> # How a 3D Printer Works</p>
+          <div style="text-align: center; float: left;" class="fragment">
+            <p data-markdown>### Solid Plastic</p>
+            <p data-markdown>### **&dArr;**</p>
+            <p data-markdown>### Liquid Plastic </p>
+            <p data-markdown>### **&dArr;**</p>
+            <p data-markdown>### Solid Plastic</p>
+          </div>
+          <div style="text-align: right; float: right;" class="fragment">
+            <video loop autoplay>
+              <source data-src="lib/video/slicing_01.ogv" type="video/ogg"/>
+            </video>
+          </div>
+        </section>
+				<section id="print-video" data-background-video="lib/video/printing_01.mp4" data-background-video-loop=true>
+				</section>
+				<section id="how-printer-works-02">
+          <p data-markdown> # How a 3D Printer Works</p>
+          <div style="text-align: right; float: left;">
+            <p data-markdown class="fragment">## Heaters  &lArr;</p>
+            <p data-markdown class="fragment">## Temp Sensors  &rArr;</p>
+            <p data-markdown class="fragment">## Stepper Motors  &lArr;</p>
+            <p data-markdown class="fragment">## Limit Switches  &rArr;</p>
+          </div>
+          <div style="text-align: center; float: right;" class="fragment">
+            <img src="lib/img/arduino_01.png" class="voffset40">
+            <p data-markdown> Microcontroller</p>
+          </div>
+				</section>
+        <section id="how-printer-controlled-01">
+          <p data-markdown> # How a 3D Printer is Controlled</p>
+          <div style="text-align: center; float: left;">
+            <img src="lib/img/arduino_01.png" class="voffset40">
+            <p data-markdown> Microcontroller</p>
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown class="fragment">## &rArr; Dot-Matrix LCD</p>
+            <p data-markdown class="fragment">## &lArr; Jog Dial</p>
+            <p data-markdown class="fragment">## &lArr; SD Card</p>
+          </div>
+        </section>
+        <section id="how-printer-controlled-02">
+          <p data-markdown> # How a 3D Printer is Controlled</p>
+          <p data-markdown> ## --LCD + Jog Dial Set Temp Video Here--</p>
+        </section>
+        <section id="how-printer-controlled-03">
+          <p data-markdown> # How a 3D Printer is Controlled</p>
+          <p data-markdown> ## --LCD + Jog Dial Print File Video Here--</p>
+        </section>
+        <section id="gcode">
+          <div style="text-align: right; float: left; width: 30%">
+            <p data-markdown> # GCode</p>
+          </div>
+          <div style="text-align: left; float: right; width: 65%" class="fragment">
+            <pre><code data-trim data-noescape class="gcode">
+G1 X93.087 Y79.875 E17.81040
+G1 X105.300 Y79.874 E18.23090
+G1 X105.826 Y79.870 E18.24901
+G1 X106.156 Y79.869 E18.26038
+G1 X106.156 Y79.200 E18.28341
+G1 X119.456 Y79.200 E18.74134
+G0 F10200 X119.056 Y79.600
+<mark>G1 F600 X119.056 Y118.600 E20.08412</mark>
+G1 X118.656 Y118.600 E20.09790
+G1 X118.656 Y120.200 E20.15299
+G1 X106.556 Y120.200 E20.56959
+G1 X106.556 Y119.731 E20.58574
+G1 X106.513 Y119.732 E20.58722
+G1 X106.421 Y119.731 E20.59039
+G1 X105.839 Y119.732 E20.61043
+G1 X93.700 Y119.731 E21.02838
+            </pre></code> 
+          </div>
+        </section>
+        <section id="limitations">
+          <p data-markdown> # Limitations</p>
+          <div style="text-align: right; float: left">
+            <p data-markdown class="fragment"> ## Cumbersome input</p>
+            <p data-markdown class="fragment"> ## Limited output</p>
+          </div>
+          <div style="text-align: left; float: right">
+            <p data-markdown class="fragment"> ## SD Card sucks</p>
+            <p data-markdown class="fragment"> ## Updating firmware</p>
+          </div>
+        </section>
+        <section id="open-gb">
+          <p data-markdown> # OpenGB</p>
+        </section>
+        <section id="gigabot">
+          <img src="lib/img/open_gigabot_02.jpg" style="background-color:white;">
+        </section>
+        <section id="aims">
+          <p data-markdown> # OpenGB Aims</p>
+          <table>
+            <tr>
+              <td align="center" class="fragment">
+                <p data-markdown> ## Interface</p>
+                <p data-markdown> Approachable</p>
+                <p data-markdown> Feature-rich</p>
+              </td> 
+              <td align="center" class="fragment">
+                <p data-markdown> ## Network</p>
+                <p data-markdown> Gcode uploads</p>
+                <p data-markdown> Print monitoring</p>
+              </td> 
+              <td align="center" class="fragment">
+                <p data-markdown> ## Codebase</p>
+                <p data-markdown> FOSS</p>
+                <p data-markdown> API</p>
+                <p data-markdown> Documentation</p>
+                <p data-markdown> Easy deploy</p>
+              </td> 
+            </tr>
+          </table> 
+        </section>
+        <section id="printer-control-revisited">
+          <p data-markdown> # Printer Control Revisited</p>
+          <div style="text-align: center; float: left;">
+            <img src="lib/img/arduino_01.png" class="voffset40">
+            <p data-markdown> Microcontroller</p>
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>## &rArr; Dot-Matrix LCD</p>
+            <p data-markdown>## &lArr; Jog Dial</p>
+            <p data-markdown>## &lArr; SD Card</p>
+            <p data-markdown class="fragment">## &hArr; Serial</p>
+          </div>
+        </section>
+        <section id="architecture">
+          <p data-markdown> # OpenGB Architecture</p>
+          <img src="lib/img/architecture.png" style="background-color:white;">
+        </section>
+        <section>
+          <p data-markdown> # Single-board Computer</p>
+          <div style="text-align: left; float: left;">
+            <img src="lib/img/arch_computer.png" style="background-color:white;">
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>## Raspberry Pi</p>
+            <p data-markdown>## Touchscreen</p>
+            <span class="fragment">
+              <p data-markdown>(or any computer</p>
+              <p data-markdown>running Linux)</p>
+            </span>
+          </div>
+        </section>
+        <section>
+          <p data-markdown> # Backend Application</p>
+          <div style="text-align: left; float: left;">
+            <img src="lib/img/arch_backend.png" style="background-color:white;">
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>## Python</p>
+            <p data-markdown>## Multi-process</p>
+			    </div>
+        </section>
+        <section>
+          <p data-markdown> # Printer Process</p>
+          <div style="text-align: left; float: left; width: 60%">
+            <img src="lib/img/arch_process_printer.png" style="background-color:white;">
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>## Printer interface</p>
+            <p data-markdown>## Gcode exec</p>
+			    </div>
+        </section>
+        <section>
+          <p data-markdown> # Server Process</p>
+          <div style="text-align: left; float: left; width: 60%">
+            <img src="lib/img/arch_process_server.png" style="background-color:white;">
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>## Websocket API</p>
+            <p data-markdown>## Database</p>
+            <p data-markdown>## Filesystem</p>
+			    </div>
+        </section>
+        <section>
+          <p data-markdown> # Frontend Application</p>
+          <div style="text-align: left; float: left; width: 60%">
+            <img src="lib/img/arch_frontend.png" style="background-color:white;">
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>### Javascript (Vue.js)</p>
+            <p data-markdown>### Optional</p>
+            <p data-markdown>### Distinct</p>
+            <p data-markdown>### Local == Remote</p>
+			   </div>
+        </section>
+        <section id="tornado-1">
+          <p data-markdown> # Tornado</p>
+          <p data-markdown class="fragment"> ## Asynchronous</p>
+          <p data-markdown class="fragment"> ## Self-contained</p>
+          <p data-markdown class="fragment"> ## Event loop</p>
+        </section>
+        <section id="tornado-2">
+          <p data-markdown> # Tornado - Periodic Callback</p>
+            <pre><code data-trim data-noescape class="py">
+# Initialize printer queues.
+to_printer = multiprocessing.Queue()
+from_printer = multiprocessing.Queue()
+
+...
+
+# Create event loop and periodic callbacks
+main_loop = tornado.ioloop.IOLoop.instance()
+<mark>printer_event_processor = tornado.ioloop.PeriodicCallback(
+    lambda: process_printer_events(from_printer), 10)</mark>
+counter_updater = tornado.ioloop.PeriodicCallback(
+    lambda: update_counters(), 60000)
+
+# Rock and roll.
+<mark>printer_event_processor.start()</mark>
+counter_updater.start()
+main_loop.start()
+            </pre></code> 
+        </section>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+        width: 1000,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
