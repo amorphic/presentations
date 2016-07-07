@@ -180,7 +180,8 @@ G1 X93.700 Y119.731 E21.02838
               <td align="center" class="fragment">
                 <p data-markdown> ## Network</p>
                 <p data-markdown> Gcode uploads</p>
-                <p data-markdown> Print monitoring</p>
+                <p data-markdown> Remote control</p>
+                <p data-markdown> Remote monitoring</p>
               </td> 
               <td align="center" class="fragment">
                 <p data-markdown> ## Codebase</p>
@@ -427,7 +428,7 @@ class MessageHandler(object):
 class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def __init__(self, *args, **kwargs):
         message_handler = MessageHandler(kwargs.pop('to_printer'))
-        self.dispatcher = Dispatcher(message_handler)
+        <mark>self.dispatcher = Dispatcher(message_handler)</mark>
         super().__init__(*args, **kwargs)
 
     ...
@@ -435,7 +436,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):
         LOGGER.debug('Message received from {0}: {1}'.format(
             self.request.remote_ip, message[:75]))
-        response = JSONRPCResponseManager.handle(message, self.dispatcher)
+        <mark>response = JSONRPCResponseManager.handle(message, self.dispatcher)</mark>
         LOGGER.debug('Sending response to {0}: {1}'.format(
             self.request.remote_ip, str(response._data)[:75]))
         self.write_message(response.json)
@@ -511,9 +512,17 @@ class MessageHandler(object):
         <section id="multiprocessing">
           <p data-markdown> # Multiprocessing</p>
           <pre><code data-trim data-noescape class="py">
-    # Initialize printer queues.
-    to_printer = multiprocessing.Queue()
-    from_printer = multiprocessing.Queue()
+# Initialize printer queues.
+to_printer = multiprocessing.Queue()
+<mark>from_printer = multiprocessing.Queue()</mark>
+
+# Initialize printer using queue callbacks.
+<mark>printer_callbacks = opengb.printer.QueuedPrinterCallbacks(from_printer)</mark>
+printer_type = getattr(opengb.printer, options.printer)
+printer = printer_type(to_printer, <mark>printer_callbacks</mark>,
+                       baud_rate=options.baud_rate,
+                       port=options.serial_port,
+                       lcd_gpio_pin=options.lcd_gpio_pin)
           </pre></code> 
         </section>
         <section id="printer-callbacks-1">
@@ -647,8 +656,8 @@ class Dummy(IPrinter):
 class Marlin(IPrinter):
 
     def __init__(self, *args, **kwargs):
-        self._serial_buffer = multiprocessing.Queue(
-            self._serial_buffersize)
+        <mark>self._serial_buffer = multiprocessing.Queue(
+            self._serial_buffersize)</mark>
         ...
 
     def _send_command(self, command, buffer=True):
@@ -657,8 +666,7 @@ class Marlin(IPrinter):
                 raise BufferFullException(...)
                 ...
             try:
-                self._serial.write(command + b'\n')
-                self._serial_buffer.put(command)
+                <mark>self._serial_buffer.put(command)</mark>
             ...
           </pre></code> 
         </section>
@@ -678,10 +686,33 @@ class Marlin(IPrinter):
                 each[1](matched.groupdict(), self._callbacks)
                 # Response message indicates a command was processed.
                 # Pop an item off the serial buffer.
-                if not self._serial_buffer.empty():
-                    self._serial_buffer.get()
+                <mark>if not self._serial_buffer.empty():
+                    self._serial_buffer.get()</mark>
                 return
           </pre></code> 
+        </section>
+        <section id="demo">
+          <p data-markdown> # Stop!</p>
+          <p data-markdown> ## Demo Time.</p>
+        </section>
+        <section id="future-1">
+          <p data-markdown> # The Future</p>
+        </section>
+        <section id="development-1">
+          <p data-markdown> # OpenGB Development</p>
+          <p data-markdown> ## More features</p>
+          <p data-markdown> ## More printers</p>
+          <p data-markdown> ## More extensible</p>
+        </section>
+        <section id="applications-1">
+          <p data-markdown> # Other Applications</p>
+          <p data-markdown> ## Especially IoT</p>
+          <p data-markdown> ## Tornado/Websocket/JSONRPC-2.0</p>
+          <p data-markdown> ## Printer Process Interface</p>
+        </section>
+        <section id="questions-1">
+          <p data-markdown> # Questions</p>
+          <p data-markdown>(Do I even have time?)</p>
         </section>
       </div>
     </div>
