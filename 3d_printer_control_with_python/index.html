@@ -124,11 +124,7 @@
         </section>
         <section id="how-printer-controlled-02">
           <p data-markdown> # How a 3D Printer is Controlled</p>
-          <p data-markdown> ## --LCD + Jog Dial Set Temp Video Here--</p>
-        </section>
-        <section id="how-printer-controlled-03">
-          <p data-markdown> # How a 3D Printer is Controlled</p>
-          <p data-markdown> ## --LCD + Jog Dial Print File Video Here--</p>
+            <img src="lib/img/lcd_jog_01.jpg" style="background-color:white;">
         </section>
         <section id="gcode">
           <div style="text-align: right; float: left; width: 30%">
@@ -162,7 +158,7 @@ G1 X93.700 Y119.731 E21.02838
             <p data-markdown class="fragment"> ## Limited output</p>
           </div>
           <div style="text-align: left; float: right">
-            <p data-markdown class="fragment"> ## SD Card sucks</p>
+            <p data-markdown class="fragment"> ## File transfer</p>
             <p data-markdown class="fragment"> ## Updating firmware</p>
           </div>
         </section>
@@ -425,14 +421,269 @@ class MessageHandler(object):
         return True
           </pre></code> 
         </section>
-        <section id="orm">
+        <section id="json-rpc-tornado-3">
+          <p data-markdown> # WebsocketHandler (revisited)</p>
+          <pre><code data-trim data-noescape class="py">
+class WebSocketHandler(tornado.websocket.WebSocketHandler):
+    def __init__(self, *args, **kwargs):
+        message_handler = MessageHandler(kwargs.pop('to_printer'))
+        self.dispatcher = Dispatcher(message_handler)
+        super().__init__(*args, **kwargs)
+
+    ...
+
+    def on_message(self, message):
+        LOGGER.debug('Message received from {0}: {1}'.format(
+            self.request.remote_ip, message[:75]))
+        response = JSONRPCResponseManager.handle(message, self.dispatcher)
+        LOGGER.debug('Sending response to {0}: {1}'.format(
+            self.request.remote_ip, str(response._data)[:75]))
+        self.write_message(response.json)
+          </pre></code> 
+        </section>
+        <section id="json-rpc-tornado-4">
+          <p data-markdown> # Sphinx-compatible Docstrings...</p>
+          <pre><code data-trim data-noescape class="py">
+def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+    """
+    Set printer target temperatures.
+
+    Unspecified target temperatures will remain unchanged.
+
+    :param bed: Bed target temperature.
+    :type bed: :class:`float`
+    :param nozzle1: Nozzle1 target temperature.
+    :type nozzle1: :class:`float`
+    :param nozzle2: Nozzle2 target temperature.
+    :type nozzle2: :class:`float`
+    """
+          </pre></code>
+        </section>
+        <section id="json-rpc-tornado-5">
+          <p data-markdown> # ...equals magic API docs!</p>
+          <img src="lib/img/api_01.png" style="background-color:white;">
+        </section>
+        <section id="orm-1">
           <p data-markdown> # ORM</p>
           <div style="text-align: left; float: left; width: 30%">
             <p data-markdown> ## SQLite + Peewee</p>
           </div>
           <div style="text-align: left; float: right; width: 65%">
+            <pre><code data-trim data-noescape class="py">
+database.py:
+
+class BaseModel(Model):
+    class Meta:
+        database = DB
+
+class GCodeFile(BaseModel):
+    name = CharField()
+    size = IntegerField()
+    uploaded = DateTimeField()
+    print_material = CharField()
+    print_quality = CharField()
+    print_extruders = CharField()
+    ...
+            </pre></code> 
           </div>
-       </div>
+        </section>
+        <section id="orm-2">
+          <p data-markdown> # ORM</p>
+          <pre><code data-trim data-noescape class="py">
+import opengb.database as OGD
+
+class MessageHandler(object):
+    def get_gcode_file(self, id, content=False):
+        try:
+            <mark>result = OGD.GCodeFile.get(OGD.GCodeFile.id == id)</mark>
+            gcode_file = {
+                'id':   result.id,
+                'name': result.name,
+                'size': result.size,
+                ...
+            }
+        except OGD.GCodeFile.DoesNotExist:
+            raise IndexError('No gcode file found with id '
+                             '{0}'.format(id))
+        return gcode_file
+          </pre></code> 
+        </section>
+        <section id="multiprocessing">
+          <p data-markdown> # Multiprocessing</p>
+          <pre><code data-trim data-noescape class="py">
+    # Initialize printer queues.
+    to_printer = multiprocessing.Queue()
+    from_printer = multiprocessing.Queue()
+          </pre></code> 
+        </section>
+        <section id="printer-callbacks-1">
+          <p data-markdown> # Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+class PrinterCallbacks(object):
+    def temp_update(self, bed_current, bed_target, nozzle1_current,
+                    nozzle1_target, nozzle2_current, nozzle2_target):
+          </pre></code> 
+          <pre><code data-trim data-noescape class="py">
+class QueuedPrinterCallbacks(PrinterCallbacks):
+    def __init__(self, from_printer):
+        self._from_printer = from_printer
+    
+    def _publish(self, event):
+        event['jsonrpc'] = '2.0'
+        self._from_printer.put(json.dumps(event))
+
+    def temp_update(self, bed_current, bed_target, nozzle1_current,
+                    nozzle1_target, nozzle2_current, nozzle2_target):
+        self._publish({
+            'event':   'temp_update',
+            'params':   {
+                'bed_current':      bed_current,
+                ...
+            }
+        })
+          </pre></code> 
+        </section>
+        <section id="printer-callbacks-2">
+          <p data-markdown> # Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+server.py:
+
+def process_printer_events(from_printer):
+    if not from_printer.empty():
+        try:
+            event = json.loads(from_printer.get())
+            if event['event'] == 'log':
+                LOGGER.log(event['params']['level'],
+                           event['params']['msg'])
+            else:
+                broadcast_message(event)
+                process_event(event)
+        except TypeError as e:
+            LOGGER.exception(e)
+          </pre></code> 
+        </section>
+        <section id="printer-callbacks-3">
+          <p data-markdown> # Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+def broadcast_message(message):
+    for each in CLIENTS:
+        each.write_message(message)
+
+def process_event(event):
+    global PRINTER
+    try:
+        ...
+
+        elif event['event'] == 'temp_update':
+            PRINTER['temp'] = event['params']
+          </pre></code> 
+        </section>
+        <section id="printer-interface">
+          <p data-markdown> # Printer Interface</p>
+        </section>
+        <section id="printer-abc-1">
+          <p data-markdown> # Printer ABC</p>
+          <pre><code data-trim data-noescape class="py">
+class IPrinter(multiprocessing.Process):
+
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        """
+        Set printer target temperatures.
+
+        :param bed: Bed target temperature
+        :type bed: :class:`float`
+        :param bed: Nozzle 1 target temperature
+        :type bed: :class:`float`
+        :param bed: Nozzle 2 target temperature
+        :type bed: :class:`float`
+        """
+        pass
+          </pre></code> 
+        </section>
+        <section id="printer-abc-2">
+          <p data-markdown> # Marlin Concrete Class</p>
+          <pre><code data-trim data-noescape class="py">
+class Marlin(IPrinter):
+
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        if bed != None:
+            self._queue_command(b'M140 S' + str(bed).encode())
+        if nozzle1 != None:
+            self._queue_command(b'T0')
+            self._queue_command(b'M104 S' + str(nozzle1).encode())
+        if nozzle2 != None:
+            self._queue_command(b'T1')
+            self._queue_command(b'M104 S' + str(nozzle2).encode())
+          </pre></code> 
+        </section>
+        <section id="printer-abc-3">
+          <p data-markdown> # Dummy Concrete Class</p>
+          <pre><code data-trim data-noescape class="py">
+class Dummy(IPrinter):
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        if bed:
+            self._callbacks.log(logging.DEBUG,
+                'Setting bed temp: {0}'.format(bed))
+            self._temp_target_bed = bed
+        if nozzle1:
+            self._callbacks.log(logging.DEBUG,
+                'Setting nozzle1 temp: {0}'.format(nozzle1))
+            self._temp_target_nozzle1 = nozzle1
+        if nozzle2:
+            self._callbacks.log(logging.DEBUG,
+                'Setting nozzle2 temp: {0}'.format(nozzle2))
+            self._temp_target_nozzle2 = nozzle2
+          </pre></code> 
+        </section>
+        <section id="serial-buffering">
+          <p data-markdown> # Serial Buffering</p>
+        </section>
+        <section id="serial-sending">
+          <p data-markdown> ## Writing</p>
+          <pre><code data-trim data-noescape class="py">
+class Marlin(IPrinter):
+
+    def __init__(self, *args, **kwargs):
+        self._serial_buffer = multiprocessing.Queue(
+            self._serial_buffersize)
+        ...
+
+    def _send_command(self, command, buffer=True):
+        with self._serial_lock:
+            if buffer and self._serial_buffer.full():
+                raise BufferFullException(...)
+                ...
+            try:
+                self._serial.write(command + b'\n')
+                self._serial_buffer.put(command)
+            ...
+          </pre></code> 
+        </section>
+        <section id="serial-sending">
+          <p data-markdown> ## Reading</p>
+          <pre><code data-trim data-noescape class="py">
+    def _process_message_from_printer(self, message):
+        """
+        Process Marlin messages and fire appropriate callbacks.
+        """
+        message = message.decode().rstrip()
+        for each in RESPONSE_MSG_PATTERNS:
+            matched = each[0].match(message)
+            if matched:
+                self._callbacks.log(logging.DEBUG,
+                                    'Parsed response: ' + message)
+                each[1](matched.groupdict(), self._callbacks)
+                # Response message indicates a command was processed.
+                # Pop an item off the serial buffer.
+                if not self._serial_buffer.empty():
+                    self._serial_buffer.get()
+                return
+          </pre></code> 
+        </section>
+      </div>
     </div>
 
 		<script src="lib/js/head.min.js"></script>
