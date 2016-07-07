@@ -245,6 +245,7 @@ G1 X93.700 Y119.731 E21.02838
           <div style="text-align: left; float: right;">
             <p data-markdown>## Printer interface</p>
             <p data-markdown>## Gcode exec</p>
+            <p data-markdown>## Agnostic</p>
 			    </div>
         </section>
         <section>
@@ -277,7 +278,7 @@ G1 X93.700 Y119.731 E21.02838
           <p data-markdown class="fragment"> ## Event loop</p>
         </section>
         <section id="tornado-2">
-          <p data-markdown> # Tornado - Periodic Callback</p>
+          <p data-markdown> # Periodic Callbacks</p>
             <pre><code data-trim data-noescape class="py">
 # Initialize printer queues.
 to_printer = multiprocessing.Queue()
@@ -298,7 +299,141 @@ counter_updater.start()
 main_loop.start()
             </pre></code> 
         </section>
-		</div>
+        <section id="websockets">
+          <p data-markdown> # Websockets</p>
+          <pre><code data-trim data-noescape class="py">
+# Backend handler is always required.
+<mark>handlers = [(r"/ws", WebSocketHandler, {"to_printer": to_printer})]</mark>
+
+# Frontend-specfic handlers added if required.
+try:
+    handlers += get_frontend_handlers(options.frontend)
+except IOError as e:
+    LOGGER.exception(e)
+    LOGGER.warn('No frontend will be served.')
+
+app = Application(handlers=handlers, debug=options.debug)
+httpServer = tornado.httpserver.HTTPServer(app)
+httpServer.listen(options.http_port)
+          </pre></code> 
+        </section>
+        <section id="websockets-handler">
+          <p data-markdown> # WebSocketHandler</p>
+          <pre><code data-trim data-noescape class="py">
+class WebSocketHandler(tornado.websocket.WebSocketHandler):
+
+    def open(self):
+        LOGGER.info('New connection from {0}'.format(
+                    self.request.remote_ip))
+        CLIENTS.append(self)
+
+    def on_close(self):
+        LOGGER.info('Connection closed to {0}'.format(
+                    self.request.remote_ip))
+        CLIENTS.remove(self)
+
+    def on_message(self, message):
+        # Process message
+        # Generate response if required
+        self.write_message(response.json)
+          </pre></code> 
+        </section>
+        <section id="json-rpc-2.0">
+          <p data-markdown> # JSON-RPC 2.0</p>
+          <p data-markdown> ### jsonrpc.org</p>
+        </section>
+        <section id="json-rpc-request">
+          <p data-markdown> # JSON-RPC 2.0</p>
+          <div style="text-align: left; float: left; width: 30%">
+            <p data-markdown> ## Request</p>
+          </div>
+          <div style="text-align: left; float: right; width: 65%">
+            <pre><code data-trim data-noescape class="json">
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "set_temp",
+    "params": {
+        "bed": 105,
+        "nozzle1": 206,
+        "nozzle2": 203
+    }
+}
+            </pre></code> 
+          </div>
+        </section>
+        <section id="json-rpc-response">
+          <p data-markdown> # JSON-RPC 2.0</p>
+          <div style="text-align: left; float: left; width: 30%">
+            <p data-markdown> ## Response</p>
+          </div>
+          <div style="text-align: left; float: right; width: 65%">
+            <pre><code data-trim data-noescape class="json">
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": true
+}
+            </pre></code> 
+          </div>
+        </section>
+        <section id="json-rpc-event">
+          <p data-markdown> # JSON-RPC 2.0</p>
+          <div style="text-align: left; float: left; width: 30%">
+            <p data-markdown> ## Event</p>
+          </div>
+          <div style="text-align: left; float: right; width: 65%">
+            <pre><code data-trim data-noescape class="json">
+{
+    "jsonrpc": "2.0",
+    "event": "temp",
+    "params": {
+        "bed_current": 203,
+        "bed_target": 105,
+        "nozzle2_target": 203,
+        "nozzle1_current": 104,
+        "nozzle2_current": 108,
+        "nozzle1_target": 206
+    }
+}
+            </pre></code> 
+          </div>
+        </section>
+        <section id="json-rpc-tornado-1">
+          <p data-markdown> # Tornado + JSON-RPC</p>
+          <pre><code data-trim data-noescape class="py">
+from jsonrpc import JSONRPCResponseManager, Dispatcher
+          </pre></code> 
+        </section>
+        <section id="json-rpc-tornado-2">
+          <p data-markdown> # MessageHandler</p>
+          <pre><code data-trim data-noescape class="py">
+class MessageHandler(object):
+
+    def __init__(self, to_printer):
+        self._to_printer = to_printer
+
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        self._to_printer.put(json.dumps({
+            'method':   'set_temp',
+            'params': {
+                'bed':      bed,
+                'nozzle1':  nozzle1,
+                'nozzle2':  nozzle2,
+            }
+        }))
+        return True
+          </pre></code> 
+        </section>
+        <section id="orm">
+          <p data-markdown> # ORM</p>
+          <div style="text-align: left; float: left; width: 30%">
+            <p data-markdown> ## SQLite + Peewee</p>
+          </div>
+          <div style="text-align: left; float: right; width: 65%">
+          </div>
+       </div>
+    </div>
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
