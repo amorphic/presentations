@@ -39,16 +39,8 @@
           </div>
           <div>
             <div style="text-align: left; float: left;" class="voffset500">
-              <p data-markdown>### SyPy July 2016</p>
-            </div>
-          </div>
-        </section>
-				<section id="james">
-          <div>
-            <div style="text-align: left; float: left;">
-              <p data-markdown># James Stewart</p>
-              <p data-markdown>## @amorphic</p>
-              <p data-markdown>## jimter.net</p>
+              <p data-markdown>### James Stewart</p>
+              <p data-markdown>### PyCon Australia 2016</p>
             </div>
           </div>
         </section>
@@ -74,8 +66,8 @@
               </td> 
               <td align="center" class="fragment">
                 <p data-markdown>## Future</p>
-                <p data-markdown>Other Applications</p>
                 <p data-markdown>Development</p>
+                <p data-markdown>Other Applications</p>
               </td> 
             </tr>
           </table> 
@@ -90,7 +82,7 @@
             <p data-markdown>### Solid Plastic</p>
           </div>
           <div style="text-align: right; float: right;" class="fragment">
-            <video loop autoplay>
+            <video loop autoplay controls>
               <source data-src="lib/video/slicing_01.ogv" type="video/ogg"/>
             </video>
           </div>
@@ -110,19 +102,19 @@
             <p data-markdown> Microcontroller</p>
           </div>
 				</section>
-        <section id="how-printer-controlled-01">
+        <section id="how-printer-controlled-01" data-transition="zoom-out">
           <p data-markdown> # How a 3D Printer is Controlled</p>
-          <div style="text-align: center; float: left;">
+          <div style="text-align: right; float: left;">
+            <p data-markdown>## Dot-Matrix LCD &lArr;</p>
+            <p data-markdown>## Jog Dial &rArr;</p>
+            <p data-markdown>## SD Card &rArr;</p>
+          </div>
+          <div style="text-align: center; float: right;">
             <img src="lib/img/arduino_01.png" class="voffset40">
             <p data-markdown> Microcontroller</p>
           </div>
-          <div style="text-align: left; float: right;">
-            <p data-markdown class="fragment">## &rArr; Dot-Matrix LCD</p>
-            <p data-markdown class="fragment">## &lArr; Jog Dial</p>
-            <p data-markdown class="fragment">## &lArr; SD Card</p>
-          </div>
         </section>
-        <section id="how-printer-controlled-02">
+        <section id="how-printer-controlled-02" data-transition="zoom-in">
           <p data-markdown> # How a 3D Printer is Controlled</p>
             <img src="lib/img/lcd_jog_01.jpg" style="background-color:white;">
         </section>
@@ -158,18 +150,12 @@ G1 X93.700 Y119.731 E21.02838
             <p data-markdown class="fragment"> ## Limited output</p>
           </div>
           <div style="text-align: left; float: right">
-            <p data-markdown class="fragment"> ## File transfer</p>
-            <p data-markdown class="fragment"> ## Updating firmware</p>
+            <p data-markdown class="fragment"> ## Physical file transfer</p>
+            <p data-markdown class="fragment"> ## Local control</p>
           </div>
         </section>
-        <section id="open-gb">
-          <p data-markdown> # OpenGB</p>
-        </section>
-        <section id="gigabot">
-          <img src="lib/img/open_gigabot_02.jpg" style="background-color:white;">
-        </section>
-        <section id="aims">
-          <p data-markdown> # OpenGB Aims</p>
+        <section id="goals">
+          <p data-markdown> # OpenGB Goals</p>
           <table>
             <tr>
               <td align="center" class="fragment">
@@ -193,59 +179,234 @@ G1 X93.700 Y119.731 E21.02838
             </tr>
           </table> 
         </section>
+				<!--
+        <section id="gigabot">
+          <img src="lib/img/open_gigabot_02.jpg" style="background-color:white;">
+        </section>
+				-->
         <section id="printer-control-revisited">
           <p data-markdown> # Printer Control Revisited</p>
-          <div style="text-align: center; float: left;">
+          <div style="text-align: right; float: left;">
+            <p data-markdown>## Dot-Matrix LCD &lArr;</p>
+            <p data-markdown>## Jog Dial &rArr;</p>
+            <p data-markdown>## SD Card &rArr;</p>
+            <p data-markdown class="fragment">## Serial &hArr;</p>
+          </div>
+          <div style="text-align: center; float: right;">
             <img src="lib/img/arduino_01.png" class="voffset40">
             <p data-markdown> Microcontroller</p>
           </div>
-          <div style="text-align: left; float: right;">
-            <p data-markdown>## &rArr; Dot-Matrix LCD</p>
-            <p data-markdown>## &lArr; Jog Dial</p>
-            <p data-markdown>## &lArr; SD Card</p>
-            <p data-markdown class="fragment">## &hArr; Serial</p>
+        </section>
+        <section id="printer-control-extended" data-transition="zoom">
+          <p data-markdown> # Printer Control Extended</p>
+          <div style="text-align: center; float: left;">
+            <img src="lib/img/raspberry_pi_02.png" class="voffset40">
+            <p data-markdown> Single-board Computer</p>
+          </div>
+          <div style="text-align: center; float: right;">
+            <img src="lib/img/arduino_01.png" class="voffset40">
+            <p data-markdown> Microcontroller</p>
           </div>
         </section>
-        <section id="architecture">
+        <section id="architecture" data-transition="zoom-in slide-out">
           <p data-markdown> # OpenGB Architecture</p>
-          <img src="lib/img/architecture.png" style="background-color:white;">
-        </section>
-        <section>
-          <p data-markdown> # Single-board Computer</p>
-          <div style="text-align: left; float: left;">
-            <img src="lib/img/arch_computer.png" style="background-color:white;">
-          </div>
-          <div style="text-align: left; float: right;">
-            <p data-markdown>## Raspberry Pi</p>
-            <p data-markdown>## Touchscreen</p>
-            <span class="fragment">
-              <p data-markdown>(or any computer</p>
-              <p data-markdown>running Linux)</p>
-            </span>
-          </div>
-        </section>
-        <section>
-          <p data-markdown> # Backend Application</p>
           <div style="text-align: left; float: left;">
             <img src="lib/img/arch_backend.png" style="background-color:white;">
           </div>
           <div style="text-align: left; float: right;">
-            <p data-markdown>## Python</p>
-            <p data-markdown>## Multi-process</p>
+            <p data-markdown>### Python</p>
+            <p data-markdown>### Network &hArr; Printer</p>
 			    </div>
         </section>
-        <section>
+        <section id="printer-process" data-transition="zoom-in slide-out">
           <p data-markdown> # Printer Process</p>
-          <div style="text-align: left; float: left; width: 60%">
+          <div style="text-align: left; float: left; width: 70%">
             <img src="lib/img/arch_process_printer.png" style="background-color:white;">
           </div>
           <div style="text-align: left; float: right;">
-            <p data-markdown>## Printer interface</p>
-            <p data-markdown>## Gcode exec</p>
-            <p data-markdown>## Agnostic</p>
+            <p data-markdown>### Printer interface</p>
+            <p data-markdown>### Separate process</p>
+            <p data-markdown>### Serial connection</p>
+            <p data-markdown>### GCode abstraction</p>
+            <p data-markdown>### Multi-printer</p>
 			    </div>
         </section>
-        <section>
+        <section id="printer-abc-1">
+          <p data-markdown> ## Printer ABC</p>
+          <pre><code data-trim data-noescape class="py">
+class IPrinter(multiprocessing.Process):
+
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        """
+        Set printer target temperatures.
+
+        :param bed: Bed target temperature
+        :type bed: :class:`float`
+        :param bed: Nozzle 1 target temperature
+        :type bed: :class:`float`
+        :param bed: Nozzle 2 target temperature
+        :type bed: :class:`float`
+        """
+        pass
+          </pre></code> 
+        </section>
+        <section id="printer-abc-2">
+          <p data-markdown> ## Marlin Concrete Class</p>
+          <pre><code data-trim data-noescape class="py">
+class Marlin(IPrinter):
+
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        if bed != None:
+            self._queue_command(b'M140 S' + str(bed).encode())
+        if nozzle1 != None:
+            self._queue_command(b'T0')
+            self._queue_command(b'M104 S' + str(nozzle1).encode())
+        if nozzle2 != None:
+            self._queue_command(b'T1')
+            self._queue_command(b'M104 S' + str(nozzle2).encode())
+          </pre></code> 
+        </section>
+        <section id="printer-abc-3">
+          <p data-markdown> ## Dummy Concrete Class</p>
+          <pre><code data-trim data-noescape class="py">
+class Dummy(IPrinter):
+    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
+        if bed:
+            self._callbacks.log(logging.DEBUG,
+                'Setting bed temp: {0}'.format(bed))
+            self._temp_target_bed = bed
+        if nozzle1:
+            self._callbacks.log(logging.DEBUG,
+                'Setting nozzle1 temp: {0}'.format(nozzle1))
+            self._temp_target_nozzle1 = nozzle1
+        if nozzle2:
+            self._callbacks.log(logging.DEBUG,
+                'Setting nozzle2 temp: {0}'.format(nozzle2))
+            self._temp_target_nozzle2 = nozzle2
+          </pre></code> 
+        </section>
+				<!--
+        <section id="serial-buffering">
+          <p data-markdown> # Serial Buffering</p>
+        </section>
+        <section id="serial-sending">
+          <p data-markdown> ## Writing</p>
+          <pre><code data-trim data-noescape class="py">
+class Marlin(IPrinter):
+
+    def __init__(self, *args, **kwargs):
+        <mark>self._serial_buffer = multiprocessing.Queue(
+            self._serial_buffersize)</mark>
+        ...
+
+    def _send_command(self, command, buffer=True):
+        with self._serial_lock:
+            if buffer and self._serial_buffer.full():
+                raise BufferFullException(...)
+                ...
+            try:
+                <mark>self._serial_buffer.put(command)</mark>
+            ...
+          </pre></code> 
+        </section>
+        <section id="serial-receiving">
+          <p data-markdown> ## Reading</p>
+          <pre><code data-trim data-noescape class="py">
+    def _process_message_from_printer(self, message):
+        """
+        Process Marlin messages and fire appropriate callbacks.
+        """
+        message = message.decode().rstrip()
+        for each in RESPONSE_MSG_PATTERNS:
+            matched = each[0].match(message)
+            if matched:
+                self._callbacks.log(logging.DEBUG,
+                                    'Parsed response: ' + message)
+                each[1](matched.groupdict(), self._callbacks)
+                # Response message indicates a command was processed.
+                # Pop an item off the serial buffer.
+                <mark>if not self._serial_buffer.empty():
+                    self._serial_buffer.get()</mark>
+                return
+          </pre></code> 
+        </section>
+				-->
+        <section id="printer-queue">
+          <p data-markdown> ## Printer Queue</p>
+          <!--
+          <pre><code data-trim data-noescape class="py">
+# Process a message from the to_printer queue.
+if not self._to_printer.empty(): 
+    message = self._to_printer.get()
+    try:
+        self._process_message_to_printer(message)
+    ...
+          </pre></code> 
+          -->
+          <pre><code data-trim data-noescape class="py">
+def _process_message_to_printer(self, message):
+    """
+        {
+            'method':   'set_temp',
+            'params':   {
+                'base':     110
+                'nozzle1':  210
+                'nozzle2':  210
+            }
+        }
+    """
+    if 'method' and 'params' in message.keys():
+        getattr(self, message['method'])(**message['params'])
+    else:
+        raise KeyError('Message does not contain `method` and `params`')
+          </pre></code>
+        </section>
+        <section id="printer-callbacks-1">
+          <p data-markdown> ## Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+class PrinterCallbacks(object):
+    def temp_update(self, bed_current, bed_target, nozzle1_current,
+                    nozzle1_target, nozzle2_current, nozzle2_target):
+          </pre></code> 
+          <pre><code data-trim data-noescape class="py">
+class QueuedPrinterCallbacks(PrinterCallbacks):
+    def __init__(self, from_printer):
+        self._from_printer = from_printer
+    
+    def _publish(self, event):
+        self._from_printer.put(event)
+
+    def temp_update(self, bed_current, bed_target, nozzle1_current,
+                    nozzle1_target, nozzle2_current, nozzle2_target):
+        self._publish({
+            'event':   'temp_update',
+            'params':   {
+                'bed_current':      bed_current,
+                ...
+            }
+        })
+          </pre></code> 
+        </section>
+        <section id="printer-callbacks-2">
+          <p data-markdown> ## Using Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+# Initialize printer queues.
+to_printer = multiprocessing.Queue()
+<mark>from_printer = multiprocessing.Queue()</mark>
+
+# Initialize printer using queue callbacks.
+<mark>printer_callbacks = opengb.printer.QueuedPrinterCallbacks(from_printer)</mark>
+printer_type = getattr(opengb.printer, options.printer)
+printer = printer_type(to_printer, <mark>printer_callbacks</mark>,
+                       baud_rate=options.baud_rate,
+                       port=options.serial_port,
+                       lcd_gpio_pin=options.lcd_gpio_pin)
+          </pre></code> 
+        </section>
+        <section id="server-process">
           <p data-markdown> # Server Process</p>
           <div style="text-align: left; float: left; width: 60%">
             <img src="lib/img/arch_process_server.png" style="background-color:white;">
@@ -256,33 +417,15 @@ G1 X93.700 Y119.731 E21.02838
             <p data-markdown>## Filesystem</p>
 			    </div>
         </section>
-        <section>
-          <p data-markdown> # Frontend Application</p>
-          <div style="text-align: left; float: left; width: 60%">
-            <img src="lib/img/arch_frontend.png" style="background-color:white;">
-          </div>
-          <div style="text-align: left; float: right;">
-            <p data-markdown>### Javascript (Vue.js)</p>
-            <p data-markdown>### Optional</p>
-            <p data-markdown>### Distinct</p>
-            <p data-markdown>### Local == Remote</p>
-			   </div>
-        </section>
         <section id="tornado-1">
           <p data-markdown> # Tornado</p>
-          <p data-markdown class="fragment"> ## Asynchronous</p>
           <p data-markdown class="fragment"> ## Self-contained</p>
+          <p data-markdown class="fragment"> ## Asynchronous</p>
           <p data-markdown class="fragment"> ## Event loop</p>
         </section>
         <section id="tornado-2">
           <p data-markdown> # Periodic Callbacks</p>
             <pre><code data-trim data-noescape class="py">
-# Initialize printer queues.
-to_printer = multiprocessing.Queue()
-from_printer = multiprocessing.Queue()
-
-...
-
 # Create event loop and periodic callbacks
 main_loop = tornado.ioloop.IOLoop.instance()
 <mark>printer_event_processor = tornado.ioloop.PeriodicCallback(
@@ -296,6 +439,42 @@ counter_updater.start()
 main_loop.start()
             </pre></code> 
         </section>
+				<!--
+        <section id="printer-callbacks-3">
+          <p data-markdown> ## Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+def process_printer_events(from_printer):
+    if not from_printer.empty():
+        try:
+            event = from_printer.get()
+            if event['event'] == 'log':
+                LOGGER.log(event['params']['level'],
+                           event['params']['msg'])
+            else:
+                broadcast_message(event)
+                process_event(event)
+        except KeyError as e:
+            LOGGER.exception(e)
+          </pre></code> 
+        </section>
+        <section id="printer-callbacks-3">
+          <p data-markdown> ## Printer Callbacks</p>
+          <pre><code data-trim data-noescape class="py">
+def broadcast_message(message):
+    message['jsonrpc'] = '2.0'
+    for each in CLIENTS:
+        each.write_message(message)
+
+def process_event(event):
+    global PRINTER
+    try:
+        ...
+
+        elif event['event'] == 'temp_update':
+            PRINTER['temp'] = event['params']
+          </pre></code> 
+        </section>
+				-->
         <section id="websockets">
           <p data-markdown> # Websockets</p>
           <pre><code data-trim data-noescape class="py">
@@ -383,7 +562,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             <pre><code data-trim data-noescape class="json">
 {
     "jsonrpc": "2.0",
-    "event": "temp",
+    "event": "temp_update",
     "params": {
         "bed_current": 203,
         "bed_target": 105,
@@ -411,7 +590,7 @@ class MessageHandler(object):
         self._to_printer = to_printer
 
     def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
-        self._to_printer.put(json.dumps({
+        self._to_printer.put({
             'method':   'set_temp',
             'params': {
                 'bed':      bed,
@@ -443,7 +622,8 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
           </pre></code> 
         </section>
         <section id="json-rpc-tornado-4">
-          <p data-markdown> # Sphinx-compatible Docstrings...</p>
+          <p data-markdown> # Sphinxy Docstrings...</p>
+					<p>(or PEP-484 type hints)</p>
           <pre><code data-trim data-noescape class="py">
 def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
     """
@@ -473,6 +653,8 @@ def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
             <pre><code data-trim data-noescape class="py">
 database.py:
 
+DB = SqliteDatabase(None)
+
 class BaseModel(Model):
     class Meta:
         database = DB
@@ -482,8 +664,6 @@ class GCodeFile(BaseModel):
     size = IntegerField()
     uploaded = DateTimeField()
     print_material = CharField()
-    print_quality = CharField()
-    print_extruders = CharField()
     ...
             </pre></code> 
           </div>
@@ -509,187 +689,17 @@ class MessageHandler(object):
         return gcode_file
           </pre></code> 
         </section>
-        <section id="multiprocessing">
-          <p data-markdown> # Multiprocessing</p>
-          <pre><code data-trim data-noescape class="py">
-# Initialize printer queues.
-to_printer = multiprocessing.Queue()
-<mark>from_printer = multiprocessing.Queue()</mark>
-
-# Initialize printer using queue callbacks.
-<mark>printer_callbacks = opengb.printer.QueuedPrinterCallbacks(from_printer)</mark>
-printer_type = getattr(opengb.printer, options.printer)
-printer = printer_type(to_printer, <mark>printer_callbacks</mark>,
-                       baud_rate=options.baud_rate,
-                       port=options.serial_port,
-                       lcd_gpio_pin=options.lcd_gpio_pin)
-          </pre></code> 
-        </section>
-        <section id="printer-callbacks-1">
-          <p data-markdown> ## Printer Callbacks</p>
-          <pre><code data-trim data-noescape class="py">
-class PrinterCallbacks(object):
-    def temp_update(self, bed_current, bed_target, nozzle1_current,
-                    nozzle1_target, nozzle2_current, nozzle2_target):
-          </pre></code> 
-          <pre><code data-trim data-noescape class="py">
-class QueuedPrinterCallbacks(PrinterCallbacks):
-    def __init__(self, from_printer):
-        self._from_printer = from_printer
-    
-    def _publish(self, event):
-        event['jsonrpc'] = '2.0'
-        self._from_printer.put(json.dumps(event))
-
-    def temp_update(self, bed_current, bed_target, nozzle1_current,
-                    nozzle1_target, nozzle2_current, nozzle2_target):
-        self._publish({
-            'event':   'temp_update',
-            'params':   {
-                'bed_current':      bed_current,
-                ...
-            }
-        })
-          </pre></code> 
-        </section>
-        <section id="printer-callbacks-2">
-          <p data-markdown> ## Printer Callbacks</p>
-          <pre><code data-trim data-noescape class="py">
-server.py:
-
-def process_printer_events(from_printer):
-    if not from_printer.empty():
-        try:
-            event = json.loads(from_printer.get())
-            if event['event'] == 'log':
-                LOGGER.log(event['params']['level'],
-                           event['params']['msg'])
-            else:
-                broadcast_message(event)
-                process_event(event)
-        except TypeError as e:
-            LOGGER.exception(e)
-          </pre></code> 
-        </section>
-        <section id="printer-callbacks-3">
-          <p data-markdown> ## Printer Callbacks</p>
-          <pre><code data-trim data-noescape class="py">
-def broadcast_message(message):
-    for each in CLIENTS:
-        each.write_message(message)
-
-def process_event(event):
-    global PRINTER
-    try:
-        ...
-
-        elif event['event'] == 'temp_update':
-            PRINTER['temp'] = event['params']
-          </pre></code> 
-        </section>
-        <section id="printer-interface-1">
-          <p data-markdown> # Printer Interface</p>
-        </section>
-        <section id="printer-abc-1">
-          <p data-markdown> ## Printer ABC</p>
-          <pre><code data-trim data-noescape class="py">
-class IPrinter(multiprocessing.Process):
-
-    __metaclass__ = abc.ABCMeta
-
-    @abc.abstractmethod
-    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
-        """
-        Set printer target temperatures.
-
-        :param bed: Bed target temperature
-        :type bed: :class:`float`
-        :param bed: Nozzle 1 target temperature
-        :type bed: :class:`float`
-        :param bed: Nozzle 2 target temperature
-        :type bed: :class:`float`
-        """
-        pass
-          </pre></code> 
-        </section>
-        <section id="printer-abc-2">
-          <p data-markdown> ## Marlin Concrete Class</p>
-          <pre><code data-trim data-noescape class="py">
-class Marlin(IPrinter):
-
-    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
-        if bed != None:
-            self._queue_command(b'M140 S' + str(bed).encode())
-        if nozzle1 != None:
-            self._queue_command(b'T0')
-            self._queue_command(b'M104 S' + str(nozzle1).encode())
-        if nozzle2 != None:
-            self._queue_command(b'T1')
-            self._queue_command(b'M104 S' + str(nozzle2).encode())
-          </pre></code> 
-        </section>
-        <section id="printer-abc-3">
-          <p data-markdown> ## Dummy Concrete Class</p>
-          <pre><code data-trim data-noescape class="py">
-class Dummy(IPrinter):
-    def set_temp(self, bed=None, nozzle1=None, nozzle2=None):
-        if bed:
-            self._callbacks.log(logging.DEBUG,
-                'Setting bed temp: {0}'.format(bed))
-            self._temp_target_bed = bed
-        if nozzle1:
-            self._callbacks.log(logging.DEBUG,
-                'Setting nozzle1 temp: {0}'.format(nozzle1))
-            self._temp_target_nozzle1 = nozzle1
-        if nozzle2:
-            self._callbacks.log(logging.DEBUG,
-                'Setting nozzle2 temp: {0}'.format(nozzle2))
-            self._temp_target_nozzle2 = nozzle2
-          </pre></code> 
-        </section>
-        <section id="serial-buffering">
-          <p data-markdown> # Serial Buffering</p>
-        </section>
-        <section id="serial-sending">
-          <p data-markdown> ## Writing</p>
-          <pre><code data-trim data-noescape class="py">
-class Marlin(IPrinter):
-
-    def __init__(self, *args, **kwargs):
-        <mark>self._serial_buffer = multiprocessing.Queue(
-            self._serial_buffersize)</mark>
-        ...
-
-    def _send_command(self, command, buffer=True):
-        with self._serial_lock:
-            if buffer and self._serial_buffer.full():
-                raise BufferFullException(...)
-                ...
-            try:
-                <mark>self._serial_buffer.put(command)</mark>
-            ...
-          </pre></code> 
-        </section>
-        <section id="serial-sending">
-          <p data-markdown> ## Reading</p>
-          <pre><code data-trim data-noescape class="py">
-    def _process_message_from_printer(self, message):
-        """
-        Process Marlin messages and fire appropriate callbacks.
-        """
-        message = message.decode().rstrip()
-        for each in RESPONSE_MSG_PATTERNS:
-            matched = each[0].match(message)
-            if matched:
-                self._callbacks.log(logging.DEBUG,
-                                    'Parsed response: ' + message)
-                each[1](matched.groupdict(), self._callbacks)
-                # Response message indicates a command was processed.
-                # Pop an item off the serial buffer.
-                <mark>if not self._serial_buffer.empty():
-                    self._serial_buffer.get()</mark>
-                return
-          </pre></code> 
+        <section id="frontend-application">
+          <p data-markdown> # Frontend Application</p>
+          <div style="text-align: left; float: left; width: 60%">
+            <img src="lib/img/arch_frontend.png" style="background-color:white;">
+          </div>
+          <div style="text-align: left; float: right;">
+            <p data-markdown>### Javascript (Vue.js)</p>
+            <p data-markdown>### Optional</p>
+            <p data-markdown>### Distinct</p>
+            <p data-markdown>### Local == Remote</p>
+			   </div>
         </section>
         <section id="demo">
           <p data-markdown> # Stop!</p>
@@ -711,8 +721,23 @@ class Marlin(IPrinter):
           <p data-markdown> ## Printer Process Interface</p>
         </section>
         <section id="questions-1">
-          <p data-markdown> # Questions</p>
-          <p data-markdown>(Do I even have time?)</p>
+					<div style="text-align: right; float: right; width: 100%">
+						<p data-markdown># Questions?</p>
+					</div>
+					<div class="voffset250">
+						<div style="text-align: right; float: left; width: 25%">
+							<p data-markdown>### **OpenGB:**</p>
+							<p data-markdown>### **Pythonic Staff:**</p>
+							<p data-markdown>### **Twitter:**</p>
+							<p data-markdown>### **Email:**</p>
+						</div>
+						<div style="text-align: left; float: right; width: 73%">
+							<p data-markdown>### opengb.readthedocs.org</p>
+							<p data-markdown>### thingiverse.com "pythonic staff"</p>
+							<p data-markdown>### @amorphic</p>
+							<p data-markdown>### james@amorphitec.io</p>
+						</div>
+					</div>
         </section>
       </div>
     </div>
