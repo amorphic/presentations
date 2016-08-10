@@ -116,13 +116,15 @@
         </section>
         <section id="how-printer-controlled-02" data-transition="zoom-in">
           <p data-markdown> # How a 3D Printer is Controlled</p>
-            <img src="lib/img/lcd_jog_01.jpg" style="background-color:white;">
+          <video loop autoplay muted="muted" volume="0" width="640" height="360" style="filter: blur(15px)">
+            <source data-src="lib/video/prusia_i3_lcd.mov" type="video/mp4"/>
+          </video>
         </section>
         <section id="gcode">
           <div style="text-align: right; float: left; width: 30%">
             <p data-markdown> # GCode</p>
           </div>
-          <div style="text-align: left; float: right; width: 65%" class="fragment">
+          <div style="text-align: left; float: right; width: 65%">
             <pre><code data-trim data-noescape class="gcode">
 G1 X93.087 Y79.875 E17.81040
 G1 X105.300 Y79.874 E18.23090
@@ -154,6 +156,43 @@ G1 X93.700 Y119.731 E21.02838
             <p data-markdown class="fragment"> ## Local control</p>
           </div>
         </section>
+        <section id="goals-interface">
+          <p data-markdown> # OpenGB Goals</p>
+          <div style="text-align: right; float: left;">
+            <p data-markdown>## Interface</p>
+            <p data-markdown class="fragment">### Approachable</p>
+            <p data-markdown class="fragment">### Feature-rich</p>
+          </div>
+          <div style="text-align: left; float: right;" class="fragment">
+            <img src="lib/img/opengb_heat_01.png" width=650 height=390 class="voffset40">
+          </div>
+        </section>
+        <section id="goals-network">
+          <p data-markdown> # OpenGB Goals</p>
+          <div style="text-align: right; float: left;">
+            <p data-markdown>## Network</p>
+            <p data-markdown class="fragment">### Gcode uploads</p>
+            <p data-markdown class="fragment">### Remote control</p>
+            <p data-markdown class="fragment">### Remote monitoring</p>
+          </div>
+          <div style="text-align: left; float: right;" class="fragment">
+            <img src="lib/img/opengb_print_01.png" width=650 height=390 class="voffset40">
+          </div>
+        </section>
+        <section id="goals-codebase">
+          <p data-markdown> # OpenGB Goals</p>
+          <div style="text-align: right; float: left;">
+            <p data-markdown>## Codebase</p>
+            <p data-markdown class="fragment">### FOSS</p>
+            <p data-markdown class="fragment">### API-driven</p>
+            <p data-markdown class="fragment">### Documented</p>
+            <p data-markdown class="fragment">### Easy deployment</p>
+          </div>
+          <div style="text-align: left; float: right;" class="fragment">
+            <img src="lib/img/opengb_docs_01.png" width=650 height=390 class="voffset40">
+          </div>
+        </section>
+				<!--
         <section id="goals">
           <p data-markdown> # OpenGB Goals</p>
           <table>
@@ -179,7 +218,6 @@ G1 X93.700 Y119.731 E21.02838
             </tr>
           </table> 
         </section>
-				<!--
         <section id="gigabot">
           <img src="lib/img/open_gigabot_02.jpg" style="background-color:white;">
         </section>
@@ -224,9 +262,9 @@ G1 X93.700 Y119.731 E21.02838
             <img src="lib/img/arch_process_printer.png" style="background-color:white;">
           </div>
           <div style="text-align: left; float: right;">
-            <p data-markdown>### Printer interface</p>
             <p data-markdown>### Separate process</p>
             <p data-markdown>### Serial connection</p>
+            <p data-markdown>### Printer interface</p>
             <p data-markdown>### GCode abstraction</p>
             <p data-markdown>### Multi-printer</p>
 			    </div>
@@ -382,7 +420,7 @@ class QueuedPrinterCallbacks(PrinterCallbacks):
     def temp_update(self, bed_current, bed_target, nozzle1_current,
                     nozzle1_target, nozzle2_current, nozzle2_target):
         self._publish({
-            'event':   'temp_update',
+            'method':   'temp_update',
             'params':   {
                 'bed_current':      bed_current,
                 ...
@@ -447,7 +485,7 @@ def process_printer_events(from_printer):
     if not from_printer.empty():
         try:
             event = from_printer.get()
-            if event['event'] == 'log':
+            if event['method'] == 'log':
                 LOGGER.log(event['params']['level'],
                            event['params']['msg'])
             else:
@@ -470,7 +508,7 @@ def process_event(event):
     try:
         ...
 
-        elif event['event'] == 'temp_update':
+        elif event['method'] == 'temp_update':
             PRINTER['temp'] = event['params']
           </pre></code> 
         </section>
@@ -562,7 +600,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             <pre><code data-trim data-noescape class="json">
 {
     "jsonrpc": "2.0",
-    "event": "temp_update",
+    "method": "temp_update",
     "params": {
         "bed_current": 203,
         "bed_target": 105,
@@ -705,9 +743,13 @@ class MessageHandler(object):
           <p data-markdown> # Stop!</p>
           <p data-markdown> ## Demo Time.</p>
         </section>
+				<section id="opengb-control" data-background-video="lib/video/opengb_control_01.mp4" data-background-video-loop=true>
+				</section>
+				<!--
         <section id="future-1">
           <p data-markdown> # The Future</p>
         </section>
+				-->
         <section id="development-1">
           <p data-markdown> # OpenGB Development</p>
           <p data-markdown> ## More features</p>
@@ -720,20 +762,14 @@ class MessageHandler(object):
           <p data-markdown> ## Tornado/Websocket/JSONRPC-2.0</p>
           <p data-markdown> ## Printer Process Interface</p>
         </section>
-        <section id="questions-1">
+				<section id="questions-1" data-background-video="lib/video/opengb_print_01.mov" data-background-video-loop=true>
 					<div style="text-align: right; float: right; width: 100%">
 						<p data-markdown># Questions?</p>
 					</div>
 					<div class="voffset250">
-						<div style="text-align: right; float: left; width: 25%">
-							<p data-markdown>### **OpenGB:**</p>
-							<p data-markdown>### **Pythonic Staff:**</p>
-							<p data-markdown>### **Twitter:**</p>
-							<p data-markdown>### **Email:**</p>
-						</div>
-						<div style="text-align: left; float: right; width: 73%">
+						<div style="text-align: right; float: right; width: 100%">
 							<p data-markdown>### opengb.readthedocs.org</p>
-							<p data-markdown>### thingiverse.com "pythonic staff"</p>
+							<p data-markdown>### jimternet/pythonic_staff</p>
 							<p data-markdown>### @amorphic</p>
 							<p data-markdown>### james@amorphitec.io</p>
 						</div>
